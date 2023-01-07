@@ -1,0 +1,16 @@
+body, html {
+	font-family:Arial;
+	height: 99%;
+	background-color: black !important;
+}
+
+#tabelle {
+	height: 90%;
+	overflow: auto;
+	color: white !important
+}
+
+#footer-left {
+	height: 10%;
+	color: white !important
+}
