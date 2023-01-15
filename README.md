@@ -7,9 +7,15 @@ There is also included an autoscroller, if you have over 50 Viewer.
 
 ## Language
 
-Attention! There are some words in German!
+You can translate it to your own language.
 
-I will add a language file in the next days!
+Just copy/duplicate lang.en.php and rename it to your language and translate.
+
+```php
+$language = "en";
+```
+
+Set your language after you translate it.
 
 ## Installation
 Download all files and upload it to your Webhosting.
@@ -24,15 +30,18 @@ E.g. https://twitch.butchris.de/viewer.php.
 ## Settings
 
 ```php
+//Set Language
+$language = "en";
+
 //Your Twitch Username
 $twitch_user = "chrischicken1992";
 
 //Turn Database on or off
-$usedatabase = true;
+$usedatabase = false;
 
 //Date Format (https://www.php.net/manual/en/datetime.format.php)
 $date_format = "d.m.Y";
-$time_format = date('H:i:s') . " Uhr";
+$time_format = date('H:i:s') . $text['VIEWER_LAST_REFRESH_CLOCK'];
 
 ```
 

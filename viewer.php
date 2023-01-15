@@ -2,6 +2,10 @@
 
 /* Settings */
 
+//Language
+$language = "en";
+include "lang/lang.$language.php";
+
 //Twitch Username
 $twitch_user = "chrischicken1992";
 
@@ -13,7 +17,7 @@ if($usedatabase == true) {
 
 //Date Format
 $date_format = "d.m.Y";
-$time_format = date('H:i:s') . " Uhr";
+$time_format = date('H:i:s') . $text['VIEWER_LAST_REFRESH_CLOCK'];
 
 //Empty Variables
 $zuschauer = "";
@@ -25,7 +29,7 @@ $newuser_viewer = "";
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Twitch Zuschauer (<?php echo $twitch_user; ?>)</title>
+	<title><?php echo $text['VIEWER_TITLE']; ?> (<?php echo $twitch_user; ?>)</title>
 	<link href="css/viewer.white.css" rel="stylesheet">
 	<link href="css/viewer.dark.css" rel="stylesheet" id="dark" disabled>
 	<!-- load jQuery and tablesorter scripts -->
@@ -61,9 +65,9 @@ foreach ($users['moderators'] as $viewer) {
 			if ($data_user = $stmt_user -> fetch()){
 				//If User is added today, then is still new User today
 				if(date('Ymd', strtotime($data_user['tc_added'])) == date('Ymd')) {
-					$newuser_mods = "<font color='red'><b>(NEUER ZUSCHAUER!)</b></font>";
+					$newuser_mods = "<font color='red'><b>(" . $text['VIEWER_NEWVIEWER'] . ")</b></font>";
 				} else {					
-					$newuser_mods = "(Seit " . date($date_format, strtotime($data_user['tc_added'])) . ")";
+					$newuser_mods = "(" . $text['VIEWER_SINCE'] . " " . date($date_format, strtotime($data_user['tc_added'])) . ")";
 				}
 			} else {
 				//Add User in Database with Datetime
@@ -76,10 +80,10 @@ foreach ($users['moderators'] as $viewer) {
 					);
 				$stmt_ins -> execute($param);
 				}
-				$newuser_mods = "<font color='red'><b>(NEUER ZUSCHAUER!)</b></font>";
+				$newuser_mods = "<font color='red'><b>(" . $text['VIEWER_NEWVIEWER'] . ")</b></font>";
 			}
 	}
-	$zuschauer .= "<tr id='$viewer'><td><button class='remove'>❌</button></td><td colspan='2'><a href='https://twitch.tv/$viewer' class='link' target='_blank'>⚔️ " . $viewer . "</a> $newuser_mods</td></tr>";
+	$zuschauer .= "<tr id='$viewer'><td><button class='remove' title='" . $text['VIEWER_TITLE_HIDE'] . "'>❌</button></td><td colspan='2'><a href='https://twitch.tv/$viewer' class='link' target='_blank'><span title='" . $text['VIEWER_TITLE_MOD'] . "'>⚔️</span> " . $viewer . "</a> $newuser_mods</td></tr>";
 }
 
 //VIPs
@@ -90,9 +94,9 @@ foreach ($users['vips'] as $viewer) {
 		$stmt_user -> execute();			
 			if ($data_user = $stmt_user -> fetch()){
 				if(date('Ymd', strtotime($data_user['tc_added'])) == date('Ymd')) {
-					$newuser_vips = "<font color='red'><b>(NEUER ZUSCHAUER!)</b></font>";
+					$newuser_vips = "<font color='red'><b>(" . $text['VIEWER_NEWVIEWER'] . ")</b></font>";
 				} else {					
-					$newuser_vips = "(Seit " . date($date_format, strtotime($data_user['tc_added'])) . ")";
+					$newuser_vips = "(" . $text['VIEWER_SINCE'] . " " . date($date_format, strtotime($data_user['tc_added'])) . ")";
 				}
 			} else {
 				$added = date('Y-m-d H:i:s');
@@ -104,10 +108,10 @@ foreach ($users['vips'] as $viewer) {
 					);
 				$stmt_ins -> execute($param);
 				}
-				$newuser_vips = "<b><font color='red'>(NEUER ZUSCHAUER!)</b></font>";
+				$newuser_vips = "<b><font color='red'>(" . $text['VIEWER_NEWVIEWER'] . ")</b></font>";
 			}
 	}
-	$zuschauer .= "<tr id='$viewer'><td><button class='remove'>❌</button></td><td colspan='2'><a href='https://twitch.tv/$viewer' class='link' target='_blank'>💎 " . $viewer . "</a> $newuser_vips</td></tr>";
+	$zuschauer .= "<tr id='$viewer'><td><button class='remove' title='" . $text['VIEWER_TITLE_HIDE'] . "'>❌</button></td><td colspan='2'><a href='https://twitch.tv/$viewer' class='link' target='_blank'><span title='" . $text['VIEWER_TITLE_VIP'] . "'>💎</span> " . $viewer . "</a> $newuser_vips</td></tr>";
 }
 
 //Viewer
@@ -118,9 +122,9 @@ foreach ($users['viewers'] as $viewer) {
 		$stmt_user -> execute();			
 			if ($data_user = $stmt_user -> fetch()){
 				if(date('Ymd', strtotime($data_user['tc_added'])) == date('Ymd')) {
-					$newuser_viewer = "<font color='red'><b>(NEUER ZUSCHAUER!)</b></font>";
+					$newuser_viewer = "<font color='red'><b>(" . $text['VIEWER_NEWVIEWER'] . ")</b></font>";
 				} else {					
-					$newuser_viewer = "(Seit " . date($date_format, strtotime($data_user['tc_added'])) . ")";
+					$newuser_viewer = "(" . $text['VIEWER_SINCE'] . " " . date($date_format, strtotime($data_user['tc_added'])) . ")";
 				}
 			} else {
 				$added = date('Y-m-d H:i:s');
@@ -132,10 +136,10 @@ foreach ($users['viewers'] as $viewer) {
 					);
 				$stmt_ins -> execute($param);
 				}
-				$newuser_viewer = "<font color='red'><b>(NEUER ZUSCHAUER!)</b></font>";
+				$newuser_viewer = "<font color='red'><b>(" . $text['VIEWER_NEWVIEWER'] . ")</b></font>";
 			}
 	}
-	$zuschauer .= "<tr id='$viewer'><td><button class='remove'>❌</button></td><td colspan='2'><a href='https://twitch.tv/$viewer' class='link' target='_blank'>" . $viewer . "</a> $newuser_viewer</td></tr>";
+	$zuschauer .= "<tr id='$viewer'><td><button class='remove' title='" . $text['VIEWER_TITLE_HIDE'] . "'>❌</button></td><td colspan='2'><a href='https://twitch.tv/$viewer' class='link' target='_blank'>" . $viewer . "</a> $newuser_viewer</td></tr>";
 }
 
 ?>
@@ -145,14 +149,14 @@ foreach ($users['viewers'] as $viewer) {
 		<thead>
 			<tr>
 				<th width="2%" data-sorter="false">
-					<a href="#" onclick="showAll();" id="auge" style="text-decoration:none;"></a>
+					<a href="#" onclick="showAll();" id="auge" style="text-decoration:none;" title="<?php echo $text['VIEWER_TITLE_EYE']; ?>"></a>
 				</th>
 				<th width="96%">
-					Zuschauer im Chat (<?php echo $count_viewer-$me; ?>)<br />
-					<input class="search" type="search" data-column="1" placeholder="Zuschauer suchen...">
+					<?php echo $text['VIEWER_TABLE_HEADER']; ?> (<?php echo $count_viewer-$me; ?>)<br />
+					<input class="search" type="search" data-column="1" placeholder="<?php echo $text['VIEWER_TABLE_FILTER_PLACEHOLDER']; ?>">
 				</th>
 				<th width="2%" data-sorter="false">
-					<a href="javascript:document.location.reload(true);" style="text-decoration:none;">🔄</a>
+					<a href="javascript:document.location.reload(true);" style="text-decoration:none;" title="<?php echo $text['VIEWER_TITLE_REFRESH']; ?>">🔄</a>
 				</th>
 			</tr>
 		</thead>
@@ -183,13 +187,13 @@ foreach ($users['viewers'] as $viewer) {
 
 </div>
 
-<div id="footer-left">Letzte Aktualisierung: <?php echo $time_format; ?>
+<div id="footer-left"><?php echo $text['VIEWER_LAST_REFRESH']; ?> <?php echo $time_format; ?>
 
 	<div id="footer-right">
 		<!-- Deactivate Autoscroller -->
-		<a href='#' onclick='scroll_on_off();' style="text-decoration:none;">⬇️</a>
+		<a href='#' onclick='scroll_on_off();' style="text-decoration:none;" title="<?php echo $text['VIEWER_TITLE_AUTOSCROLLER']; ?>">⬇️</a>
 		<!-- Toggle Dark Mode -->
-		<a href='#' id='dark-mode-text' onclick='changeDarkMode();' style="text-decoration:none;">🌙</a>
+		<a href='#' id='dark-mode-text' onclick='changeDarkMode();' style="text-decoration:none;" title="<?php echo $text['VIEWER_TITLE_DARKMODE']; ?>">🌙</a>
 	</div>
 
 </div>
